@@ -8,6 +8,7 @@ interface FretboardProps {
   showAllNotes?: boolean;
   hideNotes?: boolean;
   onNotePress?: (note: Note, string: number, fret: number) => void;
+  rootNote?: Note;
 }
 
 const FRET_WIDTH = 70;
@@ -19,7 +20,8 @@ export default function Fretboard({
   highlightedNotes = [], 
   showAllNotes = false,
   hideNotes = false,
-  onNotePress 
+  onNotePress,
+  rootNote
 }: FretboardProps) {
 
   
@@ -74,6 +76,7 @@ export default function Fretboard({
         {Array.from({ length: NUM_FRETS + 1 }).map((_, fret) => {
           const note = getNoteAtFret(stringNote, fret);
           const isHighlighted = highlightedNotes.length > 0 && highlightedNotes.includes(note);
+          const isRoot = rootNote && note === rootNote;
           const shouldShow = showAllNotes || isHighlighted;
           
           return (
@@ -87,12 +90,14 @@ export default function Fretboard({
                 <View 
                   style={[
                     styles.noteCircle,
-                    isHighlighted && styles.noteCircleHighlighted
+                    isHighlighted && styles.noteCircleHighlighted,
+                    isRoot && styles.noteCircleRoot
                   ]}
                 >
                   <Text style={[
                     styles.noteText,
-                    isHighlighted && styles.noteTextHighlighted
+                    isHighlighted && styles.noteTextHighlighted,
+                    isRoot && styles.noteTextRoot
                   ]}>
                     {note}
                   </Text>
@@ -237,6 +242,17 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
+  noteCircleRoot: {
+    backgroundColor: colors.dark.accent,
+    borderColor: colors.dark.accent,
+    borderWidth: 3,
+    shadowColor: colors.dark.accent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 12,
+    elevation: 8,
+    transform: [{ scale: 1.15 }],
+  },
   noteText: {
     color: colors.dark.textSecondary,
     fontSize: 12,
@@ -244,5 +260,10 @@ const styles = StyleSheet.create({
   },
   noteTextHighlighted: {
     color: colors.dark.text,
+  },
+  noteTextRoot: {
+    color: colors.dark.text,
+    fontSize: 14,
+    fontWeight: '900' as const,
   },
 });

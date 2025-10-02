@@ -308,12 +308,4 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
   },
-  metronomeToggleText: {
-    fontSize: 16,
-    fontWeight: '600' as const,
-    color: colors.dark.text,
-  },
-  metronomeContainer: {
-    marginBottom: 20,
-  },
-});
+  met
